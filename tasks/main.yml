@@ -33,8 +33,10 @@
   register: restic_env
 
 - name: Initialize restic repository
-  ansible.builtin.command:
-    cmd: restic -r {{ restic_repository }} init
+  ansible.builtin.shell:
+    cmd: source {{ restic_user_home }}/.restic_env && restic -r {{ restic_repository }} init
+  args:
+    executable: /bin/bash
   when: restic_repository is defined and restic_env.changed
   failed_when: false
 
