@@ -30,6 +30,13 @@
     owner: root
     group: root
     mode: "0600"
+  register: restic_env
+
+- name: Initialize restic repository
+  ansible.builtin.command:
+    cmd: restic -r {{ restic_repository }} init
+  when: restic_repository is defined and restic_env.changed
+  failed_when: false
 
 - name: Add systemd service for restic
   ansible.builtin.template:
